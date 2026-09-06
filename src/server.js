@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { adicionarPessoa, listarFila, chamarProximo } = require("./services/queueService");
+const { adicionarPessoa, listarFila, chamarProximo, finalizarAtendimento, obterPessoaAtual, listarHistorico } = require("./services/queueService");
 
 const app = express();
 
@@ -42,6 +42,31 @@ app.post("/fila/proximo", (req, res) => {
         erro: erro.message
       });
     }
+  });
+
+app.post("/fila/finalizar", (req, res) => {
+    try {
+      const pessoa = finalizarAtendimento();
+  
+      res.json(pessoa);
+    } catch (erro) {
+      res.status(400).json({
+        erro: erro.message
+      });
+    }
+    });
+
+
+app.get("/historico", (req, res) => {
+        const historico = listarHistorico();
+      
+        res.json(historico);
+    });
+    
+app.get("/fila/atual", (req, res) => {
+    const pessoaAtual = obterPessoaAtual();
+  
+    res.json(pessoaAtual);
   });
 
 app.listen(PORT, () => {

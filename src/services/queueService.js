@@ -1,5 +1,6 @@
 const fila = [];
-
+const historico = [];
+let pessoaAtual = null;
 let proximoId = 1;
 
 const contadoresSenha = {
@@ -75,12 +76,41 @@ function chamarProximo() {
     }
   
     proximo.status = "CHAMADO";
+
+    pessoaAtual = proximo;
   
     return proximo;
-  }
+}
+
+function finalizarAtendimento() {
+    if (!pessoaAtual) {
+      throw new Error("Não há atendimento em andamento");
+    }
+  
+    pessoaAtual.status = "FINALIZADO";
+  
+    historico.push(pessoaAtual);
+  
+    const pessoaFinalizada = pessoaAtual;
+  
+    pessoaAtual = null;
+  
+    return pessoaFinalizada;
+}
+
+function obterPessoaAtual() {
+    return pessoaAtual;
+}
+  
+function listarHistorico() {
+    return historico;
+}
 
 module.exports = {
-  adicionarPessoa,
-  listarFila,
-  chamarProximo
-};
+    adicionarPessoa,
+    listarFila,
+    chamarProximo,
+    finalizarAtendimento,
+    obterPessoaAtual,
+    listarHistorico
+  };
