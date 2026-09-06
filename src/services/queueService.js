@@ -61,7 +61,26 @@ function listarFila() {
   return fila;
 }
 
+function chamarProximo() {
+    const proximoPreferencial = fila.find(
+      pessoa => pessoa.status === "AGUARDANDO" && pessoa.preferencial
+    );
+  
+    const proximo = proximoPreferencial || fila.find(
+      pessoa => pessoa.status === "AGUARDANDO"
+    );
+  
+    if (!proximo) {
+      throw new Error("Não há pessoas aguardando");
+    }
+  
+    proximo.status = "CHAMADO";
+  
+    return proximo;
+  }
+
 module.exports = {
   adicionarPessoa,
-  listarFila
+  listarFila,
+  chamarProximo
 };
