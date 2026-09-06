@@ -1,4 +1,8 @@
+require("dotenv").config();
+
 const express = require("express");
+
+const { validarTokenSecretaria } = require("./middlewares/authMiddleware");
 
 const { adicionarPessoa, listarFila, chamarProximo, finalizarAtendimento, obterPessoaAtual, listarHistorico } = require("./services/queueService");
 
@@ -26,13 +30,13 @@ app.post("/fila", (req, res) => {
   }
 });
 
-app.get("/fila", (req, res) => {
+app.get("/fila", validarTokenSecretaria, (req, res) => {
     const fila = listarFila();
   
     res.json(fila);
 });
 
-app.post("/fila/proximo", (req, res) => {
+app.post("/fila/proximo", validarTokenSecretaria, (req, res) => {
     try {
       const pessoa = chamarProximo();
   
@@ -44,7 +48,7 @@ app.post("/fila/proximo", (req, res) => {
     }
   });
 
-app.post("/fila/finalizar", (req, res) => {
+app.post("/fila/finalizar", validarTokenSecretaria, (req, res) => {
     try {
       const pessoa = finalizarAtendimento();
   
@@ -57,7 +61,7 @@ app.post("/fila/finalizar", (req, res) => {
     });
 
 
-app.get("/historico", (req, res) => {
+app.get("/historico", validarTokenSecretaria, (req, res) => {
         const historico = listarHistorico();
       
         res.json(historico);
