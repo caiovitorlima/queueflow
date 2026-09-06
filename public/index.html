@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>QueueFlow</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main class="container">
+    <h1>QueueFlow</h1>
+
+    <p>Entre na fila de atendimento.</p>
+
+    <form id="formFila">
+      <label for="nome">Nome</label>
+
+      <input
+        type="text"
+        id="nome"
+        placeholder="Digite seu nome"
+        required
+      >
+
+      <p>Categoria</p>
+
+      <label>
+        <input type="radio" name="categoria" value="Exame" required>
+        Exame
+      </label>
+
+      <label>
+        <input type="radio" name="categoria" value="Consulta">
+        Consulta
+      </label>
+
+      <label>
+        <input type="radio" name="categoria" value="Retorno">
+        Retorno
+      </label>
+
+      <label class="preferencial">
+        <input type="checkbox" id="preferencial">
+        Atendimento preferencial
+      </label>
+
+      <button type="submit">
+        Entrar na fila
+      </button>
+    </form>
+
+    <div id="resultado"></div>
+  </main>
+
+  <script src="cliente.js"></script>
+</body>
+</html>
