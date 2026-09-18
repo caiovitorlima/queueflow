@@ -28,17 +28,18 @@ formFila.addEventListener("submit", async (evento) => {
     })
   });
 
-  const dados = await resposta.json();
+  const pessoaCriada = await resposta.json();
 
   if (!resposta.ok) {
-    resultado.textContent = dados.erro;
+    resultado.textContent = pessoaCriada
+.erro;
     return;
   }
 
   resultado.innerHTML = `
     <h2>Sua senha</h2>
-    <strong>${dados.senha}</strong>
-    <p>${dados.nome}</p>
+    <strong>${pessoaCriada.senha}</strong>
+    <p>${pessoaCriada.nome}</p>
     <p>Aguarde ser chamado.</p>
   `;
 

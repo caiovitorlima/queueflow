@@ -2,9 +2,22 @@ require("dotenv").config();
 
 const express = require("express");
 
-const { validarTokenSecretaria } = require("./middlewares/authMiddleware");
+const {
+  validarTokenSecretaria
+} = require("./middlewares/authMiddleware");
 
-const { adicionarPessoa, listarFila, chamarProximo, finalizarAtendimento, obterPessoaAtual, listarHistorico } = require("./services/queueService");
+const {
+  tratarErro
+} = require("./middlewares/errorMiddleware");
+
+const {
+  adicionarPessoa,
+  listarFila,
+  chamarProximo,
+  finalizarAtendimento,
+  obterPessoaAtual,
+  listarHistorico
+} = require("./services/queueService");
 
 const app = express();
 
@@ -14,66 +27,65 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-app.get("/", (req, res) => {
-  res.send("QueueFlow está funcionando!");
-});
 
 app.post("/fila", (req, res) => {
-  try {
-    const { nome, categoria, preferencial } = req.body;
+  const { nome, categoria, preferencial } = req.body;
 
-    const pessoa = adicionarPessoa(nome, categoria, preferencial);
+  const pessoa = adicionarPessoa(
+    nome,
+    categoria,
+    preferencial
+  );
 
-    res.status(201).json(pessoa);
-  } catch (erro) {
-    res.status(400).json({
-      erro: erro.message
-    });
-  }
+  res.status(201).json(pessoa);
 });
+
 
 app.get("/fila", validarTokenSecretaria, (req, res) => {
-    const fila = listarFila();
-  
-    res.json(fila);
+  const fila = listarFila();
+
+  res.json(fila);
 });
 
-app.post("/fila/proximo", validarTokenSecretaria, (req, res) => {
-    try {
-      const pessoa = chamarProximo();
-  
-      res.json(pessoa);
-    } catch (erro) {
-      res.status(400).json({
-        erro: erro.message
-      });
-    }
-  });
 
-app.post("/fila/finalizar", validarTokenSecretaria, (req, res) => {
-    try {
-      const pessoa = finalizarAtendimento();
-  
-      res.json(pessoa);
-    } catch (erro) {
-      res.status(400).json({
-        erro: erro.message
-      });
-    }
-    });
+app.post(
+  "/fila/proximo",
+  validarTokenSecretaria,
+  (req, res) => {
+    const pessoa = chamarProximo();
+
+    res.json(pessoa);
+  }
+);
+
+
+app.post(
+  "/fila/finalizar",
+  validarTokenSecretaria,
+  (req, res) => {
+    const pessoa = finalizarAtendimento();
+
+    res.json(pessoa);
+  }
+);
 
 
 app.get("/historico", validarTokenSecretaria, (req, res) => {
-        const historico = listarHistorico();
-      
-        res.json(historico);
-    });
-    
+  const historico = listarHistorico();
+
+  res.json(historico);
+});
+
+
 app.get("/fila/atual", (req, res) => {
-    const pessoaAtual = obterPessoaAtual();
-  
-    res.json(pessoaAtual);
-  });
+  const pessoaAtual = obterPessoaAtual();
+
+  res.json(pessoaAtual);
+});
+
+
+app.use(tratarErro);
+
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);

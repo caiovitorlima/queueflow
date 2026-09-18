@@ -37,17 +37,7 @@ async function fazerRequisicaoProtegida(url, opcoes = {}) {
   return resposta;
 }
 
-
-async function carregarFila() {
-  const resposta =
-    await fazerRequisicaoProtegida("/fila");
-
-  if (!resposta.ok) {
-    return;
-  }
-
-  const fila = await resposta.json();
-
+function renderizarFila(fila) {
   listaFila.innerHTML = "";
 
   const pessoasAguardando = fila.filter(
@@ -69,6 +59,19 @@ async function carregarFila() {
       </div>
     `;
   });
+}
+
+async function carregarFila() {
+  const resposta =
+    await fazerRequisicaoProtegida("/fila");
+
+  if (!resposta.ok) {
+    return;
+  }
+
+  const fila = await resposta.json();
+
+  renderizarFila(fila);
 }
 
 
@@ -146,15 +149,15 @@ botaoChamar.addEventListener("click", async () => {
       }
     );
 
-  const dados = await resposta.json();
+  const pessoaChamada = await resposta.json();
 
   if (!resposta.ok) {
-    mensagemSecretaria.textContent = dados.erro;
+    mensagemSecretaria.textContent = pessoaChamada.erro;
     return;
   }
 
   mensagemSecretaria.textContent =
-    `${dados.senha} - ${dados.nome} chamado.`;
+    `${pessoaChamada.senha} - ${pessoaChamada.nome} chamado.`;
 
   atualizarPainel();
 });
@@ -169,15 +172,15 @@ botaoFinalizar.addEventListener("click", async () => {
       }
     );
 
-  const dados = await resposta.json();
+  const pessoaFinalizada = await resposta.json();
 
   if (!resposta.ok) {
-    mensagemSecretaria.textContent = dados.erro;
+    mensagemSecretaria.textContent = pessoaFinalizada.erro;
     return;
   }
 
   mensagemSecretaria.textContent =
-    `${dados.senha} - ${dados.nome} finalizado.`;
+    `${pessoaFinalizada.senha} - ${pessoaFinalizada.nome} finalizado.`;
 
   atualizarPainel();
 });
