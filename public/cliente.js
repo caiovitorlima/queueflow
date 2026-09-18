@@ -8,31 +8,29 @@ formFila.addEventListener("submit", async (evento) => {
   const nome = document.getElementById("nome").value;
 
   const categoriaSelecionada = document.querySelector(
-    'input[name="categoria"]:checked'
+    'input[name="categoria"]:checked',
   );
 
-  const preferencial =
-    document.getElementById("preferencial").checked;
+  const preferencial = document.getElementById("preferencial").checked;
 
   const resposta = await fetch("/fila", {
     method: "POST",
 
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
 
     body: JSON.stringify({
       nome: nome,
       categoria: categoriaSelecionada.value,
-      preferencial: preferencial
-    })
+      preferencial: preferencial,
+    }),
   });
 
   const pessoaCriada = await resposta.json();
 
   if (!resposta.ok) {
-    resultado.textContent = pessoaCriada
-.erro;
+    resultado.textContent = pessoaCriada.erro;
     return;
   }
 

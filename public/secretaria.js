@@ -12,26 +12,23 @@ const botaoSair = document.getElementById("botaoSair");
 const listaFila = document.getElementById("listaFila");
 const listaHistorico = document.getElementById("listaHistorico");
 
-const mensagemSecretaria =
-  document.getElementById("mensagemSecretaria");
-
+const mensagemSecretaria = document.getElementById("mensagemSecretaria");
 
 function obterToken() {
   return sessionStorage.getItem("secretaryToken");
 }
-
 
 async function fazerRequisicaoProtegida(url, opcoes = {}) {
   const token = obterToken();
 
   const headers = {
     ...opcoes.headers,
-    "x-secretary-token": token
+    "x-secretary-token": token,
   };
 
   const resposta = await fetch(url, {
     ...opcoes,
-    headers: headers
+    headers: headers,
   });
 
   return resposta;
@@ -41,7 +38,7 @@ function renderizarFila(fila) {
   listaFila.innerHTML = "";
 
   const pessoasAguardando = fila.filter(
-    pessoa => pessoa.status === "AGUARDANDO"
+    (pessoa) => pessoa.status === "AGUARDANDO",
   );
 
   if (pessoasAguardando.length === 0) {
@@ -62,8 +59,7 @@ function renderizarFila(fila) {
 }
 
 async function carregarFila() {
-  const resposta =
-    await fazerRequisicaoProtegida("/fila");
+  const resposta = await fazerRequisicaoProtegida("/fila");
 
   if (!resposta.ok) {
     return;
@@ -74,10 +70,8 @@ async function carregarFila() {
   renderizarFila(fila);
 }
 
-
 async function carregarHistorico() {
-  const resposta =
-    await fazerRequisicaoProtegida("/historico");
+  const resposta = await fazerRequisicaoProtegida("/historico");
 
   if (!resposta.ok) {
     return;
@@ -88,8 +82,7 @@ async function carregarHistorico() {
   listaHistorico.innerHTML = "";
 
   if (historico.length === 0) {
-    listaHistorico.innerHTML =
-      "<p>Nenhum atendimento finalizado.</p>";
+    listaHistorico.innerHTML = "<p>Nenhum atendimento finalizado.</p>";
 
     return;
   }
@@ -105,23 +98,17 @@ async function carregarHistorico() {
   });
 }
 
-
 async function atualizarPainel() {
   await carregarFila();
   await carregarHistorico();
 }
 
-
 botaoEntrar.addEventListener("click", async () => {
   const tokenDigitado = campoToken.value;
 
-  sessionStorage.setItem(
-    "secretaryToken",
-    tokenDigitado
-  );
+  sessionStorage.setItem("secretaryToken", tokenDigitado);
 
-  const resposta =
-    await fazerRequisicaoProtegida("/fila");
+  const resposta = await fazerRequisicaoProtegida("/fila");
 
   if (!resposta.ok) {
     sessionStorage.removeItem("secretaryToken");
@@ -139,15 +126,10 @@ botaoEntrar.addEventListener("click", async () => {
   atualizarPainel();
 });
 
-
 botaoChamar.addEventListener("click", async () => {
-  const resposta =
-    await fazerRequisicaoProtegida(
-      "/fila/proximo",
-      {
-        method: "POST"
-      }
-    );
+  const resposta = await fazerRequisicaoProtegida("/fila/proximo", {
+    method: "POST",
+  });
 
   const pessoaChamada = await resposta.json();
 
@@ -156,21 +138,15 @@ botaoChamar.addEventListener("click", async () => {
     return;
   }
 
-  mensagemSecretaria.textContent =
-    `${pessoaChamada.senha} - ${pessoaChamada.nome} chamado.`;
+  mensagemSecretaria.textContent = `${pessoaChamada.senha} - ${pessoaChamada.nome} chamado.`;
 
   atualizarPainel();
 });
 
-
 botaoFinalizar.addEventListener("click", async () => {
-  const resposta =
-    await fazerRequisicaoProtegida(
-      "/fila/finalizar",
-      {
-        method: "POST"
-      }
-    );
+  const resposta = await fazerRequisicaoProtegida("/fila/finalizar", {
+    method: "POST",
+  });
 
   const pessoaFinalizada = await resposta.json();
 
@@ -179,12 +155,10 @@ botaoFinalizar.addEventListener("click", async () => {
     return;
   }
 
-  mensagemSecretaria.textContent =
-    `${pessoaFinalizada.senha} - ${pessoaFinalizada.nome} finalizado.`;
+  mensagemSecretaria.textContent = `${pessoaFinalizada.senha} - ${pessoaFinalizada.nome} finalizado.`;
 
   atualizarPainel();
 });
-
 
 botaoSair.addEventListener("click", () => {
   sessionStorage.removeItem("secretaryToken");
