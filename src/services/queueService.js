@@ -6,13 +6,13 @@ let proximoId = 1;
 const contadoresSenha = {
   Exame: 0,
   Consulta: 0,
-  Retorno: 0
+  Retorno: 0,
 };
 
 const prefixosCategoria = {
   Exame: "E",
   Consulta: "C",
-  Retorno: "R"
+  Retorno: "R",
 };
 
 function gerarSenha(categoria) {
@@ -48,7 +48,7 @@ function adicionarPessoa(nome, categoria, preferencial) {
     categoria: categoria,
     preferencial: preferencial,
     senha: senha,
-    status: "AGUARDANDO"
+    status: "AGUARDANDO",
   };
 
   proximoId++;
@@ -63,54 +63,54 @@ function listarFila() {
 }
 
 function chamarProximo() {
-    const proximoPreferencial = fila.find(
-      pessoa => pessoa.status === "AGUARDANDO" && pessoa.preferencial
-    );
-  
-    const proximo = proximoPreferencial || fila.find(
-      pessoa => pessoa.status === "AGUARDANDO"
-    );
-  
-    if (!proximo) {
-      throw new Error("Não há pessoas aguardando");
-    }
-  
-    proximo.status = "CHAMADO";
+  const proximoPreferencial = fila.find(
+    (pessoa) => pessoa.status === "AGUARDANDO" && pessoa.preferencial,
+  );
 
-    pessoaAtual = proximo;
-  
-    return proximo;
+  const proximo =
+    proximoPreferencial ||
+    fila.find((pessoa) => pessoa.status === "AGUARDANDO");
+
+  if (!proximo) {
+    throw new Error("Não há pessoas aguardando");
+  }
+
+  proximo.status = "CHAMADO";
+
+  pessoaAtual = proximo;
+
+  return proximo;
 }
 
 function finalizarAtendimento() {
-    if (!pessoaAtual) {
-      throw new Error("Não há atendimento em andamento");
-    }
-  
-    pessoaAtual.status = "FINALIZADO";
-  
-    historico.push(pessoaAtual);
-  
-    const pessoaFinalizada = pessoaAtual;
-  
-    pessoaAtual = null;
-  
-    return pessoaFinalizada;
+  if (!pessoaAtual) {
+    throw new Error("Não há atendimento em andamento");
+  }
+
+  pessoaAtual.status = "FINALIZADO";
+
+  historico.push(pessoaAtual);
+
+  const pessoaFinalizada = pessoaAtual;
+
+  pessoaAtual = null;
+
+  return pessoaFinalizada;
 }
 
 function obterPessoaAtual() {
-    return pessoaAtual;
+  return pessoaAtual;
 }
-  
+
 function listarHistorico() {
-    return historico;
+  return historico;
 }
 
 module.exports = {
-    adicionarPessoa,
-    listarFila,
-    chamarProximo,
-    finalizarAtendimento,
-    obterPessoaAtual,
-    listarHistorico
-  };
+  adicionarPessoa,
+  listarFila,
+  chamarProximo,
+  finalizarAtendimento,
+  obterPessoaAtual,
+  listarHistorico,
+};

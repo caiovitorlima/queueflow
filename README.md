@@ -8,13 +8,13 @@ Também existem uma tela de monitor, que mostra a pessoa chamada no momento, e u
 
 Tecnologias utilizadas
 
-* Node.js
-* Express
-* JavaScript
-* HTML
-* CSS
-* dotenv
-* Git e GitHub
+- Node.js
+- Express
+- JavaScript
+- HTML
+- CSS
+- dotenv
+- Git e GitHub
 
 Como rodar o projeto localmente
 
@@ -65,10 +65,10 @@ Após a primeira versão funcional do projeto, foi feito um diagnóstico de qual
 
 As principais alterações foram:
 
-* substituição de nomes genéricos de variáveis por nomes que representam melhor sua intenção;
-* separação da renderização da fila em uma função própria;
-* remoção de blocos de tratamento de erro duplicados nas rotas;
-* criação de um middleware centralizado para tratamento de erros;
-* adição de logs contendo o método HTTP, a rota e a mensagem do erro.
+- substituição de nomes genéricos de variáveis por nomes que representam melhor sua intenção;
+- separação da renderização da fila em uma função própria;
+- remoção de blocos de tratamento de erro duplicados nas rotas;
+- criação de um middleware centralizado para tratamento de erros;
+- adição de logs contendo o método HTTP, a rota e a mensagem do erro.
 
 As alterações foram feitas procurando manter o mesmo funcionamento da versão inicial, melhorando principalmente a organização e a legibilidade do código.

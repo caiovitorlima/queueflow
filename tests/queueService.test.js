@@ -16,13 +16,8 @@ beforeEach(() => {
   listarHistorico = queueService.listarHistorico;
 });
 
-
 test("deve adicionar uma pessoa válida à fila", () => {
-  const pessoa = adicionarPessoa(
-    "Caio",
-    "Exame",
-    false
-  );
+  const pessoa = adicionarPessoa("Caio", "Exame", false);
 
   expect(pessoa).toEqual({
     id: 1,
@@ -30,56 +25,32 @@ test("deve adicionar uma pessoa válida à fila", () => {
     categoria: "Exame",
     preferencial: false,
     senha: "E001",
-    status: "AGUARDANDO"
+    status: "AGUARDANDO",
   });
 });
 
-
 test("deve rejeitar uma categoria inválida", () => {
   expect(() => {
-    adicionarPessoa(
-      "Caio",
-      "Batata",
-      false
-    );
+    adicionarPessoa("Caio", "Batata", false);
   }).toThrow("Categoria inválida");
 });
 
-
 test("deve rejeitar um nome vazio", () => {
   expect(() => {
-    adicionarPessoa(
-      "   ",
-      "Exame",
-      false
-    );
+    adicionarPessoa("   ", "Exame", false);
   }).toThrow("Nome é obrigatório");
 });
 
-
 test("deve rejeitar preferencial que não seja booleano", () => {
   expect(() => {
-    adicionarPessoa(
-      "Caio",
-      "Exame",
-      "sim"
-    );
+    adicionarPessoa("Caio", "Exame", "sim");
   }).toThrow("Preferencial deve ser verdadeiro ou falso");
 });
 
-
 test("deve chamar a primeira pessoa quando não há preferencial", () => {
-  adicionarPessoa(
-    "Joao",
-    "Exame",
-    false
-  );
+  adicionarPessoa("Joao", "Exame", false);
 
-  adicionarPessoa(
-    "Pedro",
-    "Retorno",
-    false
-  );
+  adicionarPessoa("Pedro", "Retorno", false);
 
   const pessoaChamada = chamarProximo();
 
@@ -87,19 +58,10 @@ test("deve chamar a primeira pessoa quando não há preferencial", () => {
   expect(pessoaChamada.status).toBe("CHAMADO");
 });
 
-
 test("deve chamar uma pessoa preferencial antes de uma pessoa normal", () => {
-  adicionarPessoa(
-    "Joao",
-    "Exame",
-    false
-  );
+  adicionarPessoa("Joao", "Exame", false);
 
-  adicionarPessoa(
-    "Maria",
-    "Consulta",
-    true
-  );
+  adicionarPessoa("Maria", "Consulta", true);
 
   const pessoaChamada = chamarProximo();
 
@@ -107,25 +69,18 @@ test("deve chamar uma pessoa preferencial antes de uma pessoa normal", () => {
   expect(pessoaChamada.status).toBe("CHAMADO");
 });
 
-
 test("deve gerar erro ao chamar uma fila vazia", () => {
   expect(() => {
     chamarProximo();
   }).toThrow("Não há pessoas aguardando");
 });
 
-
 test("deve finalizar o atendimento atual", () => {
-  adicionarPessoa(
-    "Caio",
-    "Exame",
-    false
-  );
+  adicionarPessoa("Caio", "Exame", false);
 
   chamarProximo();
 
-  const pessoaFinalizada =
-    finalizarAtendimento();
+  const pessoaFinalizada = finalizarAtendimento();
 
   expect(pessoaFinalizada.status).toBe("FINALIZADO");
 
@@ -133,7 +88,6 @@ test("deve finalizar o atendimento atual", () => {
 
   expect(listarHistorico()).toHaveLength(1);
 });
-
 
 test("deve gerar erro ao finalizar sem atendimento em andamento", () => {
   expect(() => {

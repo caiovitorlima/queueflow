@@ -18,7 +18,7 @@ async function atualizarMonitor() {
       <div class="senha-monitor">${pessoa.senha}</div>
       <div class="nome-monitor">${pessoa.nome}</div>
     `;
-  } catch (erro) {
+  } catch {
     chamadaAtual.innerHTML = `
       <p>Não foi possível atualizar o monitor.</p>
     `;

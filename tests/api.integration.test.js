@@ -10,15 +10,12 @@ beforeEach(() => {
   app = require("../src/app");
 });
 
-
 test("POST /fila deve cadastrar uma pessoa pela API", async () => {
-  const resposta = await request(app)
-    .post("/fila")
-    .send({
-      nome: "Caio",
-      categoria: "Exame",
-      preferencial: false
-    });
+  const resposta = await request(app).post("/fila").send({
+    nome: "Caio",
+    categoria: "Exame",
+    preferencial: false,
+  });
 
   expect(resposta.status).toBe(201);
 
@@ -28,22 +25,19 @@ test("POST /fila deve cadastrar uma pessoa pela API", async () => {
     categoria: "Exame",
     preferencial: false,
     senha: "E001",
-    status: "AGUARDANDO"
+    status: "AGUARDANDO",
   });
 });
 
-
 test("GET /fila deve bloquear acesso sem token", async () => {
-  const resposta = await request(app)
-    .get("/fila");
+  const resposta = await request(app).get("/fila");
 
   expect(resposta.status).toBe(401);
 
   expect(resposta.body).toEqual({
-    erro: "Acesso não autorizado"
+    erro: "Acesso não autorizado",
   });
 });
-
 
 test("GET /fila deve permitir acesso com token válido", async () => {
   const resposta = await request(app)
@@ -54,19 +48,16 @@ test("GET /fila deve permitir acesso com token válido", async () => {
   expect(resposta.body).toEqual([]);
 });
 
-
 test("POST /fila deve retornar erro para categoria inválida", async () => {
-  const resposta = await request(app)
-    .post("/fila")
-    .send({
-      nome: "Caio",
-      categoria: "Batata",
-      preferencial: false
-    });
+  const resposta = await request(app).post("/fila").send({
+    nome: "Caio",
+    categoria: "Batata",
+    preferencial: false,
+  });
 
   expect(resposta.status).toBe(400);
 
   expect(resposta.body).toEqual({
-    erro: "Categoria inválida"
+    erro: "Categoria inválida",
   });
 });
